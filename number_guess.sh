@@ -16,7 +16,9 @@ GUESS_GAME(){
     if [[ $NUMBER_GUESS == $2 ]]
     then
       echo "You guessed it in $3 tries. The secret number was $2. Nice job!";
+      INSERT_SUCCESS=$($PSQL "INSERT INTO games(user_id, number_inserted, secret_number, correct) VALUES ($1, $NUMBER_GUESS, $2, true);")
     else
+      INSERT_FAIL=$($PSQL "INSERT INTO games(user_id, number_inserted, secret_number, correct) VALUES ($1, $NUMBER_GUESS, $2, false);")
       NUMBER_OF_GUESSES=$(($3 + 1))
       if [[ $NUMBER_GUESS < $2 ]]
       then
