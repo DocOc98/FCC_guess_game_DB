@@ -6,7 +6,7 @@ GUESS_GAME(){
   #echo "($2)--"
   if [[ -z $4 ]]
   then
-    echo -e "\nGuess the number: "
+    echo -e "\Guess the secret number between 1 and 1000:"
   else
     echo -e "\n$4"
   fi
