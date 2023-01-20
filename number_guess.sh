@@ -1,12 +1,12 @@
 #!/bin/bash
-PSQL="psql --username=freecodecamp --dbname=postgres -t --no-align -c"
+PSQL="psql --username=freecodecamp --dbname=number_guess -t --no-align -c"
 echo -e "\n~~Welcome~~\n"
 
 GUESS_GAME(){
   #echo "($2)--"
   if [[ -z $4 ]]
   then
-    echo -e "\Guess the secret number between 1 and 1000:"
+    echo -e "\nGuess the secret number between 1 and 1000:"
   else
     echo -e "\n$4"
   fi
