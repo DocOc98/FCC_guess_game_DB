@@ -10,11 +10,11 @@ then
     USER_ID=$($PSQL "SELECT user_id FROM users WHERE username = '$USERNAME';")
 else
     GAMES_PLAYED=$($PSQL "SELECT COUNT(*) FROM games WHERE user_id = $USER_ID;")
-    BEST_GAME=$($PSQL "SELECT MIN(number_of_guesses) FROM games WHERE user_id = $USER_ID;")
+    BEST_GUESS=$($PSQL "SELECT MIN(number_of_guesses) FROM games WHERE user_id = $USER_ID;")
     echo -e "\nWelcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GUESS guesses."
 fi
 SECRET_NUMBER=$(($RANDOM % 1000 + 1))
-NUMBER_OF_GUESSES=0
+NUMBER_OF_GUESSES=1
 LOOP=1
 echo -e "\nGuess the secret number between 1 and 1000:"
 while [[ $LOOP -eq 1 ]]
