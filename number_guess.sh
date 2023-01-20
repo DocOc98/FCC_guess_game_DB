@@ -41,7 +41,7 @@ then
 else
   GAMES_PLAYED=$($PSQL "SELECT count(games_id) WHERE user_id=$USER_ID;" | sed -r 's/^ *| *$//g')
   BEST_GAME=$($PSQL "SELECT count(games_id) WHERE user_id=$USER_ID AND correct=true;" | sed -r 's/^ *| *$//g')
-  echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
+  echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses." 
 fi
 SECRET_NUMBER=$(($RANDOM % 1000 + 1))
 GUESS_GAME $USER_ID $SECRET_NUMBER 1
