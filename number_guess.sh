@@ -1,9 +1,10 @@
 #!/bin/bash
 PSQL="psql --username=freecodecamp --dbname=number_guess -t --no-align -c"
-echo -e "\n~~Welcome~~\n"
+#echo -e "\n~~Welcome~~\n"
 
 GUESS_GAME(){
   #echo "($2)--"
+  NUMBER_OF_GUESSES=$(($3 + 1))
   if [[ -z $4 ]]
   then
     echo -e "\nGuess the secret number between 1 and 1000:"
@@ -19,7 +20,6 @@ GUESS_GAME(){
       INSERT_SUCCESS=$($PSQL "INSERT INTO games(user_id, number_inserted, secret_number, correct) VALUES ($1, $NUMBER_GUESS, $2, true);")
     else
       INSERT_FAIL=$($PSQL "INSERT INTO games(user_id, number_inserted, secret_number, correct) VALUES ($1, $NUMBER_GUESS, $2, false);")
-      NUMBER_OF_GUESSES=$(($3 + 1))
       if [[ $NUMBER_GUESS < $2 ]]
       then
         GUESS_GAME $1 $2 $NUMBER_OF_GUESSES "It's higher than that, guess again"
@@ -28,7 +28,7 @@ GUESS_GAME(){
       fi
     fi
   else
-    GUESS_GAME $1 $2 $3 "That is not an integer, guess again:"
+    GUESS_GAME $1 $2 $NUMBER_OF_GUESSES "That is not an integer, guess again:"
   fi
 }
 
