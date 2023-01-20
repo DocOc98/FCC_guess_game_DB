@@ -32,7 +32,7 @@ GUESS_GAME(){
   fi
 }
 
-echo "Enter your username:" 
+echo "Enter your username: "
 read USERNAME
 USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$USERNAME';" | sed -r 's/^ *| *$//g')
 if [[ -z $USER_ID ]]
@@ -43,7 +43,7 @@ then
 else
   GAMES_PLAYED=$($PSQL "SELECT count(game_id) FROM games WHERE user_id=$USER_ID;" | sed -r 's/^ *| *$//g')
   BEST_GAME=$($PSQL "SELECT min(number_of_guesses) FROM games WHERE user_id=$USER_ID;" | sed -r 's/^ *| *$//g')
-  echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses." 
+  echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 fi
 SECRET_NUMBER=$(($RANDOM % 1000 + 1))
 GUESS_GAME $USER_ID $SECRET_NUMBER 1
