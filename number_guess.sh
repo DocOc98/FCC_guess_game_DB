@@ -1,5 +1,5 @@
 #!/bin/bash
-PSQL="psql --username=freecodecamp --dbname=<database_name> -t --no-align -c"
+PSQL="psql --username=freecodecamp --dbname=postgres -t --no-align -c"
 echo -e "\n~~Welcome~~\n"
 
 GUESS_GAME(){
@@ -39,8 +39,8 @@ then
   INSERT_USER=$($PSQL "INSERT INTO users(username) VALUES ('$USERNAME');")
   USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$USERNAME';" | sed -r 's/^ *| *$//g')
 else
-  GAMES_PLAYED=$($PSQL "SELECT count(games_id) WHERE user_id=$USER_ID;" | sed -r 's/^ *| *$//g')
-  BEST_GAME=$($PSQL "SELECT count(games_id) WHERE user_id=$USER_ID AND correct=true;" | sed -r 's/^ *| *$//g')
+  GAMES_PLAYED=$($PSQL "SELECT count(game_id) FROM games WHERE user_id=$USER_ID;" | sed -r 's/^ *| *$//g')
+  BEST_GAME=$($PSQL "SELECT count(game_id) FROM games WHERE user_id=$USER_ID AND correct=true;" | sed -r 's/^ *| *$//g')
   echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses." 
 fi
 SECRET_NUMBER=$(($RANDOM % 1000 + 1))
