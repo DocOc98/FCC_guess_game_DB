@@ -17,9 +17,9 @@ GUESS_GAME(){
     if [[ $NUMBER_GUESS == $2 ]]
     then
       echo "You guessed it in $3 tries. The secret number was $2. Nice job!";
-      INSERT_SUCCESS=$($PSQL "INSERT INTO games(user_id, number_inserted, secret_number, correct) VALUES ($1, $NUMBER_GUESS, $2, true);")
+      INSERT_SUCCESS=$($PSQL "INSERT INTO games(user_id, secret_number, number_of_guesses) VALUES ($1, $2, $NUMBER_OF_GUESSES);")
     else
-      INSERT_FAIL=$($PSQL "INSERT INTO games(user_id, number_inserted, secret_number, correct) VALUES ($1, $NUMBER_GUESS, $2, false);")
+      INSERT_FAIL=$($PSQL "INSERT INTO games(user_id, secret_number, number_of_guesses) VALUES ($1, $2, $NUMBER_OF_GUESSES);")
       if [[ $NUMBER_GUESS < $2 ]]
       then
         GUESS_GAME $1 $2 $NUMBER_OF_GUESSES "It's higher than that, guess again"
@@ -42,7 +42,7 @@ then
   USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$USERNAME';" | sed -r 's/^ *| *$//g')
 else
   GAMES_PLAYED=$($PSQL "SELECT count(game_id) FROM games WHERE user_id=$USER_ID;" | sed -r 's/^ *| *$//g')
-  BEST_GAME=$($PSQL "SELECT count(game_id) FROM games WHERE user_id=$USER_ID AND correct=true;" | sed -r 's/^ *| *$//g')
+  BEST_GAME=$($PSQL "SELECT min(number_of_guesses) FROM games WHERE user_id=$USER_ID;" | sed -r 's/^ *| *$//g')
   echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses." 
 fi
 SECRET_NUMBER=$(($RANDOM % 1000 + 1))
